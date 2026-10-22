@@ -5,7 +5,7 @@ import java.util.Comparator;
 
 public class Contacts {
 
-    ArrayList<Contact> contacts = new ArrayList<>();
+    private ArrayList<Contact> contacts = new ArrayList<>();
 
     //add new contact and auto sort alphabetically by first name
     public void addNewContact(Contact contact) {
@@ -162,6 +162,13 @@ public class Contacts {
             }
         });
     }
+    
+    public ArrayList<Contact> getContacts() {
+        return contacts;
+    }
 
 
+    public void setContacts(ArrayList<Contact> contacts) {
+        this.contacts = contacts;
+    }
 }

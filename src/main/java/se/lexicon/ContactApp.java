@@ -7,14 +7,13 @@ public class ContactApp {
 
     void main() {
 
-        //some dummy contacts to test the app
-        contacts.addNewContact(new Contact(1, "John", "Doe", "1234567890", ""));
-        contacts.addNewContact(new Contact(2, "Jane", "Smith", "0987654321", ""));
-        contacts.addNewContact(new Contact(3, "Alice", "Johnson", "5555555555", ""));
+        contacts.setContacts(SaveLoadContacts.loadContacts());
 
         IO.println("Welcome to the Contact Management App!");
 
         runApp();
+        
+        SaveLoadContacts.saveContacts(contacts.getContacts());
     }
 
     private void runApp() {

@@ -1,136 +1,197 @@
 package se.lexicon;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 
 public class ContactApp {
 
-    ArrayList<Person> contacts = new ArrayList<>();
+    Contacts contacts = new Contacts();
     
     void main() {
-
-        boolean continueCreating = true;
         
+        //some dummy contacts to test the app
+        contacts.addNewContact(new Contact(1, "John", "Doe", "1234567890", ""));
+        contacts.addNewContact(new Contact(2, "Jane", "Smith", "0987654321", ""));
+        contacts.addNewContact(new Contact(3, "Alice", "Johnson", "5555555555", ""));
+
+        IO.println("Welcome to the Contact Management App!");
+        
+        runApp();
+    }
+    
+    private void runApp(){
+        
+        boolean runApp = true;
+        while(runApp) {
+
+            //show main menu and getting the user-input for the choices
+            int choice = showMainMenu();
+            switch (choice) {
+                
+                    //print all contacts
+                case 1:
+                    contacts.printAllContacts();
+                    break;
+                    
+                    // create new contacts
+                case 2:
+                    createContacts();
+                    break;
+                    
+                    // find a contact and show menu for the found contact
+                case 3:
+                    findContactMenu();
+                    break;
+
+                    // exit the app -> break out of the loop
+                case 4:
+                    runApp = false;
+                    break;
+                default:
+                    IO.println("Invalid choice. Please try again.");
+                    break;
+            }
+        }
+    }
+    
+    private int showMainMenu() {
+        IO.println("==================");
+        IO.println("*** Main Menu ***");
+        IO.println("==================");
+        IO.println("What do you want to do?");
+        IO.println("\t1. Print all contacts");
+        IO.println("\t2. Create new contacts");
+        IO.println("\t3. Find a contact by first name");
+        IO.println("\t4. Exit");
+        return getMenuNumberFromUserInRange("Enter your choice:", 1, 4);
+    }
+    
+    private void createContacts(){
+        //Creating contacts
+        boolean continueCreating = true;
+
         while (continueCreating) {
-            createNewContact();
-            
-           String input = IO.readln("Do you want to create a new contact (yes/no):");
-           if (input.equals("no")) {
+            contacts.createNewContact();
+
+            String input = getYesNoChoiceFromUser("Do you want to create another contact?");
+            if (input.equals("no")) {
                 continueCreating = false;
             }
-
         }
-
-        sortListByFirstName();
-        printAllContacts();
-        deletePerson();
-        printAllContacts();
     }
     
-    private void createNewContact() {
-        Person newPerson = new Person();
+    private void findContactMenu(){
+        //find contact
+        Contact contact = null;
         
-        newPerson.setFirstName(IO.readln("Enter first name: "));
-        newPerson.setLastName(IO.readln("Enter last name: "));
-        newPerson.setPhoneNumber(IO.readln("Enter phone number: "));
-        newPerson.setEmail(IO.readln("Enter email: "));
-        IO.println("Contact created successfully!");
-        IO.println("--------------------\n");
-
-        contacts.add(newPerson);
-    }
-
-    private void printAllContacts(){
-
-        IO.println("\n---- CONTACTS ---- ");
-        for (int i = 0; i < contacts.size(); i++) {
-            IO.println((i + 1) + ". ");
-            IO.println(contacts.get(i).toString());
-            IO.print("--------------------\n");
-        }
-    }
-    
-    //Get a person
-    private Person findPersonByFirstName(){
-        String name = IO.readln("Enter the first name you want to search: ");
-        return  findPersonByFirstName(name);
-    }
-    
-    private Person findPersonByFirstName(String name)
-    {
-        for (Person person : contacts) {
-            if (person.getFirstName().equalsIgnoreCase(name)) {
-                return person;
+        while (contact == null) {
+            IO.println("Find contact by ...");
+            IO.println("\t1. First name");
+            IO.println("\t2. Last name");
+            IO.println("\t3. Email");
+            IO.println("\t4. Return to main menu");
+            
+            int choice = getMenuNumberFromUserInRange("Enter your choice:", 1, 4);
+            IO.println();
+            
+            switch (choice) {
+                case 1:
+                    contact = contacts.findPersonByFirstName();
+                    break;
+                case 2:
+                    contact = contacts.findPersonByLastName();
+                    break;
+                case 3:
+                    contact = contacts.findPersonByEmail();
+                    break;
+                case 4:
+                    return; // return to main menu
+                default:
+                    IO.println("Invalid choice. Please try again.");
+                    break;
             }
         }
-        return null;
+        
+        showContactMenu(contact);
     }
     
-    //delete a person 
-    private void deletePerson(){
-        IO.println("Delete a contact");
-        Person person = findPersonByFirstName();
-        
-        if (person == null) {
-            IO.println("Person not found.");
-            return;
+    private void showContactMenu(Contact contact) {
+        boolean continueContactMenu = true;
+        while (continueContactMenu) {
+            IO.println("*** Contact found ***  \n" + contact.toString());
+            IO.println("--------------------");
+            IO.println("What do you want to do?");
+            IO.println("\t1. Edit contact");
+            IO.println("\t2. Delete contact");
+            IO.println("\t3. Return to main menu");
+            
+            int choice = getMenuNumberFromUserInRange("Enter your choice:", 1, 3);
+            
+            switch (choice) {
+                //edit contact details
+                case 1:
+                    contacts.editContact(contact);
+                    IO.println("----------------\n");
+                    break;
+                    
+                //delete contact  
+                case 2:
+                    contacts.deleteContact(contact);
+                    continueContactMenu = false; // exit the contact menu after deletion
+                    IO.println("----------------\n");
+                    break;
+                    
+                //do nothing and return to main menu
+                case 3:
+                    IO.println();
+                    return;
+                default:
+                    IO.println("Invalid choice. Please try again.");
+                    break;
+            }
+            
         }
-        
-        contacts.remove(person);
-        IO.println("Contact deleted successfully!");
-    }
-     
-    
-    //edit a person
-    private void editPerson(Person person) {
-        if (person == null) {
-            IO.println("Person not found.");
-            return;
-        }
-        
-        IO.println("\nEditing contact:\n" + person + "\n");
-        
-        String newFirstName = IO.readln("Enter new first name (leave blank to keep current): ");
-        if (!newFirstName.isEmpty()) {
-            person.setFirstName(newFirstName);
-        }
-        
-        String newLastName = IO.readln("Enter new last name (leave blank to keep current): ");
-        if (!newLastName.isEmpty()) {
-            person.setLastName(newLastName);
-        }
-        
-        String newPhoneNumber = IO.readln("Enter new phone number (leave blank to keep current): ");
-        if (!newPhoneNumber.isEmpty()) {
-            person.setPhoneNumber(newPhoneNumber);
-        }
-        
-        String newEmail = IO.readln("Enter new email (leave blank to keep current): ");
-        if (!newEmail.isEmpty()) {
-            person.setEmail(newEmail);
-        }
-        
-        IO.println("Contact updated successfully!");
     }
 
-    //Sorting methods
-    private void sortListByFirstName(){
-        contacts.sort(Comparator.comparing(Person::getFirstName));
-        
-    }
     
-    private void sortListByFirstNameReversed(){
-        contacts.sort(Comparator.comparing(Person::getFirstName).reversed());
-    }
-    
-    //alternative to comparator 
-    private void comparatorSortListByFirstName(){
-        contacts.sort( new Comparator<Person>() {
-            @Override
-            public int compare(Person p1, Person p2) {
-                return p1.getFirstName().compareTo(p2.getFirstName());
+    // **** USER INPUTS ****
+    public static String getYesNoChoiceFromUser(String message){
+        String choice = "";
+        boolean validInput = false;
+
+        while (!validInput) {
+            String userInput = IO.readln(message + " (yes/no): ");
+
+            if (userInput.equalsIgnoreCase("yes") || userInput.equalsIgnoreCase("no")) {
+                choice = userInput.toLowerCase();
+                validInput = true;
+            } else {
+                IO.println("Invalid input. Please enter 'yes' or 'no'.");
             }
-        });
+
+        }
+        return  choice;
+    }
+
+    //getting a number from the user from min to max, includes validation checks so that the program continues only 
+    //when a valid number is being entered by the user
+    public static int getMenuNumberFromUserInRange(String message, int minIncl, int maxIncl){
+        int menuNumber = 0;
+        boolean validInput = false;
+
+        while (!validInput) {
+            String userInput = IO.readln(message + " (" + minIncl + "-" + maxIncl + "): ");
+
+            try {
+                menuNumber = Integer.parseInt(userInput);
+                validInput = menuNumber >= minIncl && menuNumber <= maxIncl;
+
+            } catch (NumberFormatException e) {
+            }
+
+            if (!validInput) {
+                IO.println("Invalid choice. Please enter a number between " + minIncl + " and " + maxIncl + ".");
+            }
+        }
+        return  menuNumber;
     }
   
 }

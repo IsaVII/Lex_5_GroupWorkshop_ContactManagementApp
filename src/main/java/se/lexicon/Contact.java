@@ -1,6 +1,6 @@
 package se.lexicon;
 
-public class Person {
+public class Contact {
     
     private int id;
     private String firstName;
@@ -8,11 +8,11 @@ public class Person {
     private String phoneNumber;
     private String email;
 
-    public Person(){
+    public Contact(){
         
     }
     
-    public Person(int id, String firstName, String lastName, String phoneNumber, String email) {
+    public Contact(int id, String firstName, String lastName, String phoneNumber, String email) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

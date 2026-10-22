@@ -1,7 +1,5 @@
 package se.lexicon;
 
-import java.security.KeyStore;
-import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -12,10 +10,6 @@ public class ContactApp {
     void main() {
 
         boolean continueCreating = true;
-        
-        contacts.add(new Person(1, "John", "Doe", "1234567890", "john.doe@example.com"));
-        contacts.add(new Person(2, "Jane", "Smith", "9876543210", ""));
-        contacts.add(new Person(3, "Alice", "Johnson", "5555555555", ""));
         
         while (continueCreating) {
             createNewContact();
@@ -29,7 +23,7 @@ public class ContactApp {
 
         sortListByFirstName();
         printAllContacts();
-        editPerson(findPersonByFirstName());
+        deletePerson();
         printAllContacts();
     }
     
@@ -71,6 +65,21 @@ public class ContactApp {
         }
         return null;
     }
+    
+    //delete a person 
+    private void deletePerson(){
+        IO.println("Delete a contact");
+        Person person = findPersonByFirstName();
+        
+        if (person == null) {
+            IO.println("Person not found.");
+            return;
+        }
+        
+        contacts.remove(person);
+        IO.println("Contact deleted successfully!");
+    }
+     
     
     //edit a person
     private void editPerson(Person person) {

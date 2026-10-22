@@ -15,7 +15,6 @@ public class SaveLoadContacts {
         //Create CSV text
         StringBuilder sb = new StringBuilder();
         for (Contact contact : contacts) {
-            sb.append(contact.getId()).append(",");
             sb.append(contact.getFirstName()).append(",");
             sb.append(contact.getLastName()).append(",");
             sb.append(contact.getPhoneNumber()).append(",");
@@ -47,21 +46,21 @@ public class SaveLoadContacts {
             String[] lines = sb.toString().split("\n");
             for (String line : lines) {
                 String[] parts = line.split(",");
-                if (parts.length == 5) {
+                if (parts.length == 4) {
                     Contact contact = new Contact();
-                    contact.setId(Integer.parseInt(parts[0]));
-                    contact.setFirstName(parts[1]);
-                    contact.setLastName(parts[2]);
-                    contact.setPhoneNumber(parts[3]);
-                    contact.setEmail(parts[4]);
+                    contact.setFirstName(parts[0]);
+                    contact.setLastName(parts[1]);
+                    contact.setPhoneNumber(parts[2]);
+                    contact.setEmail(parts[3]);
                     contacts.add(contact);
                 }
             }
 
-            fileReader.close();
             
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return  contacts;
+        } finally {
+            IO.println("Contacts loaded successfully!");
         }
         
         return contacts;

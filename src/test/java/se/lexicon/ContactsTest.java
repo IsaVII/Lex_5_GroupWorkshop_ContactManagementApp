@@ -38,8 +38,13 @@ class ContactsTest {
         resetIoReader();
     }
 
-    private Contact contact(int id, String firstName, String lastName, String phone, String email) {
-        return new Contact(id, firstName, lastName, phone, email);
+    private Contact contact( String firstName, String lastName, String phone, String email) {
+       Contact contact = new Contact();
+       contact.setFirstName(firstName);
+       contact.setLastName(lastName);
+       contact.setPhoneNumber(phone);
+       contact.setEmail(email);
+       return contact;
     }
 
     /**
@@ -70,7 +75,7 @@ class ContactsTest {
         @Test
         @DisplayName("Adds a contact so it can be found afterwards")
         void addNewContact_addsContactToList() {
-            Contact alice = contact(1, "Alice", "Andersson", "0701111111", "alice@example.com");
+            Contact alice = contact("Alice", "Andersson", "0701111111", "alice@example.com");
 
             contacts.addNewContact(alice);
 
@@ -80,9 +85,9 @@ class ContactsTest {
         @Test
         @DisplayName("Keeps the contact list sorted by first name after adding")
         void addNewContact_keepsListSortedByFirstName() {
-            Contact charlie = contact(1, "Charlie", "Chaplin", "0701111111", "charlie@example.com");
-            Contact alice = contact(2, "Alice", "Andersson", "0702222222", "alice@example.com");
-            Contact bob = contact(3, "Bob", "Builder", "0703333333", "bob@example.com");
+            Contact charlie = contact("Charlie", "Chaplin", "0701111111", "charlie@example.com");
+            Contact alice = contact("Alice", "Andersson", "0702222222", "alice@example.com");
+            Contact bob = contact("Bob", "Builder", "0703333333", "bob@example.com");
 
             contacts.addNewContact(charlie);
             contacts.addNewContact(alice);
@@ -103,7 +108,7 @@ class ContactsTest {
         @Test
         @DisplayName("Finds a contact ignoring case")
         void findPersonByFirstName_existingNameDifferentCase_returnsContact() {
-            Contact alice = contact(1, "Alice", "Andersson", "0701111111", "alice@example.com");
+            Contact alice = contact("Alice", "Andersson", "0701111111", "alice@example.com");
             contacts.addNewContact(alice);
 
             Contact found = contacts.findPersonByFirstName("aLICE");
@@ -114,7 +119,7 @@ class ContactsTest {
         @Test
         @DisplayName("Returns null when no contact matches the first name")
         void findPersonByFirstName_unknownName_returnsNull() {
-            contacts.addNewContact(contact(1, "Alice", "Andersson", "0701111111", "alice@example.com"));
+            contacts.addNewContact(contact("Alice", "Andersson", "0701111111", "alice@example.com"));
 
             Contact found = contacts.findPersonByFirstName("Zelda");
 
@@ -129,7 +134,7 @@ class ContactsTest {
         @Test
         @DisplayName("Finds a contact ignoring case")
         void findPersonByLastName_existingNameDifferentCase_returnsContact() {
-            Contact alice = contact(1, "Alice", "Andersson", "0701111111", "alice@example.com");
+            Contact alice = contact("Alice", "Andersson", "0701111111", "alice@example.com");
             contacts.addNewContact(alice);
 
             Contact found = contacts.findPersonByLastName("ANDERSSON");
@@ -140,7 +145,7 @@ class ContactsTest {
         @Test
         @DisplayName("Returns null when no contact matches the last name")
         void findPersonByLastName_unknownName_returnsNull() {
-            contacts.addNewContact(contact(1, "Alice", "Andersson", "0701111111", "alice@example.com"));
+            contacts.addNewContact(contact("Alice", "Andersson", "0701111111", "alice@example.com"));
 
             Contact found = contacts.findPersonByLastName("Smith");
 
@@ -155,7 +160,7 @@ class ContactsTest {
         @Test
         @DisplayName("Finds a contact ignoring case")
         void findPersonByEmail_existingEmailDifferentCase_returnsContact() {
-            Contact alice = contact(1, "Alice", "Andersson", "0701111111", "alice@example.com");
+            Contact alice = contact("Alice", "Andersson", "0701111111", "alice@example.com");
             contacts.addNewContact(alice);
 
             Contact found = contacts.findPersonByEmail("ALICE@EXAMPLE.COM");
@@ -166,7 +171,7 @@ class ContactsTest {
         @Test
         @DisplayName("Returns null when no contact matches the email")
         void findPersonByEmail_unknownEmail_returnsNull() {
-            contacts.addNewContact(contact(1, "Alice", "Andersson", "0701111111", "alice@example.com"));
+            contacts.addNewContact(contact("Alice", "Andersson", "0701111111", "alice@example.com"));
 
             Contact found = contacts.findPersonByEmail("nobody@example.com");
 
@@ -181,7 +186,7 @@ class ContactsTest {
         @Test
         @DisplayName("Removes the contact from the list")
         void deleteContact_existingContact_removesContact() {
-            Contact alice = contact(1, "Alice", "Andersson", "0701111111", "alice@example.com");
+            Contact alice = contact("Alice", "Andersson", "0701111111", "alice@example.com");
             contacts.addNewContact(alice);
 
             contacts.deleteContact(alice);
@@ -195,7 +200,7 @@ class ContactsTest {
         @Test
         @DisplayName("Does nothing and does not throw when contact is null")
         void deleteContact_nullContact_doesNothing() {
-            Contact alice = contact(1, "Alice", "Andersson", "0701111111", "alice@example.com");
+            Contact alice = contact("Alice", "Andersson", "0701111111", "alice@example.com");
             contacts.addNewContact(alice);
 
             assertDoesNotThrow(() -> contacts.deleteContact(null));
@@ -211,7 +216,7 @@ class ContactsTest {
         @Test
         @DisplayName("Updates all fields when new values are provided")
         void editContact_allFieldsProvided_updatesContact() {
-            Contact alice = contact(1, "Alice", "Andersson", "0701111111", "alice@example.com");
+            Contact alice = contact("Alice", "Andersson", "0701111111", "alice@example.com");
             contacts.addNewContact(alice);
 
             simulateInput("Alicia", "Svensson", "0709999999", "alicia@example.com");
@@ -228,7 +233,7 @@ class ContactsTest {
         @Test
         @DisplayName("Keeps original values when all answers are left blank")
         void editContact_blankAnswers_keepsOriginalValues() {
-            Contact alice = contact(1, "Alice", "Andersson", "0701111111", "alice@example.com");
+            Contact alice = contact("Alice", "Andersson", "0701111111", "alice@example.com");
             contacts.addNewContact(alice);
 
             simulateInput("", "", "", "");

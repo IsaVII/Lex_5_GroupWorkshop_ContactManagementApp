@@ -16,7 +16,12 @@ public class Contacts {
     public void createNewContact() {
         Contact newContact = new Contact();
 
-        newContact.setFirstName(IO.readln("Enter first name: "));
+        String firstName = IO.readln("Enter first name: ");
+        while (firstName.isEmpty()) {
+            firstName = IO.readln("First name can't be empty. Enter first name: ");
+        }
+        newContact.setFirstName(firstName);
+
         newContact.setLastName(IO.readln("Enter last name: "));
         newContact.setPhoneNumber(IO.readln("Enter phone number: "));
         newContact.setEmail(IO.readln("Enter email: "));

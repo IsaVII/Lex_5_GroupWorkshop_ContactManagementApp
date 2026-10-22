@@ -2,7 +2,6 @@ package se.lexicon;
 
 public class Contact {
     
-    private int id;
     private String firstName;
     private String lastName;
     private String phoneNumber;
@@ -12,22 +11,6 @@ public class Contact {
         
     }
     
-    public Contact(int id, String firstName, String lastName, String phoneNumber, String email) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getFirstName() {
         return firstName;
     }

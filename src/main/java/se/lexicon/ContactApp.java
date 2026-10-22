@@ -9,6 +9,7 @@ public class ContactApp {
     void main() {
         
         createNewContact();
+        printAllContacts();
         
         
 
@@ -23,5 +24,15 @@ public class ContactApp {
         newPerson.setEmail(IO.readln("Enter email: "));
 
         contacts.add(newPerson);
+    }
+    
+    void printAllContacts(){
+
+        IO.println("\n---- CONTACTS ---- ");
+        for (int i = 0; i < contacts.size(); i++) {
+            IO.println((i + 1) + ". ");
+            IO.println(contacts.get(i).toString());
+            IO.print("--------------------");
+        }
     }
 }

@@ -129,31 +129,29 @@ public class Contacts {
     }
 
     //Sorting methods
-    public void sortListByFirstName(){
-        contacts.sort(Comparator.comparing(Contact::getFirstName));
+    public void sortByFirstName(boolean reversed) {
+        if (reversed) {
+            contacts.sort(Comparator.comparing(Contact::getFirstName).reversed());
+        } else {
+            contacts.sort(Comparator.comparing(Contact::getFirstName));
+        }
     }
 
-    public void sortListByFirstNameReversed(){
-        contacts.sort(Comparator.comparing(Contact::getFirstName).reversed());
+    public void sortByLastName(boolean reversed) {
+        if (reversed) {
+            contacts.sort(Comparator.comparing(Contact::getLastName).reversed());
+        } else {
+            contacts.sort(Comparator.comparing(Contact::getLastName));
+        }
     }
     
-    public void sortListByLastName(){
-        contacts.sort(Comparator.comparing(Contact::getLastName));
+    public void sortByEmail(boolean reversed) {
+        if (reversed) {
+            contacts.sort(Comparator.comparing(Contact::getEmail).reversed());
+        } else {    
+            contacts.sort(Comparator.comparing(Contact::getEmail));
+        }
     }
-    
-    public void sortListByLastNameReversed(){
-        contacts.sort(Comparator.comparing(Contact::getLastName).reversed());
-    }
-    
-    public void sortListByEmail(){
-        contacts.sort(Comparator.comparing(Contact::getEmail));
-    }
-    
-    public void sortListByEmailReversed(){
-        contacts.sort(Comparator.comparing(Contact::getEmail).reversed());
-    }
-    
-    
 
     //alternative to comparator 
     private void comparatorSortListByFirstName(){

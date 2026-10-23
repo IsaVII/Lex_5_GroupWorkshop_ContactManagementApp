@@ -94,9 +94,9 @@ class ContactsTest {
             contacts.addNewContact(bob);
 
             assertAll(
-                    () -> assertEquals("Alice", contacts.contacts.get(0).getFirstName()),
-                    () -> assertEquals("Bob", contacts.contacts.get(1).getFirstName()),
-                    () -> assertEquals("Charlie", contacts.contacts.get(2).getFirstName())
+                    () -> assertEquals("Alice", contacts.getContacts().get(0).getFirstName()),
+                    () -> assertEquals("Bob", contacts.getContacts().get(1).getFirstName()),
+                    () -> assertEquals("Charlie", contacts.getContacts().get(2).getFirstName())
             );
         }
     }
@@ -193,7 +193,7 @@ class ContactsTest {
 
             assertAll(
                     () -> assertNull(contacts.findPersonByFirstName("Alice")),
-                    () -> assertTrue(contacts.contacts.isEmpty())
+                    () -> assertTrue(contacts.getContacts().isEmpty())
             );
         }
 
@@ -205,7 +205,7 @@ class ContactsTest {
 
             assertDoesNotThrow(() -> contacts.deleteContact(null));
 
-            assertFalse(contacts.contacts.isEmpty());
+            assertFalse(contacts.getContacts().isEmpty());
         }
     }
 

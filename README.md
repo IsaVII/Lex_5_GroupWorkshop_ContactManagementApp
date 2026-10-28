@@ -1,4 +1,4 @@
-# Contact Management App
+# Contact Management App ![CI](https://github.com/IsaVII/Lex_5_GroupWorkshop_ContactManagementApp/actions/workflows/ci.yml/badge.svg)
 
 A console-based Java application for managing a list of contacts: create, view, find, edit, delete, sort, and persist them to a CSV file. It was built as a group workshop project to practice core Java and object-oriented programming concepts, so the explanations below are written for people who are still new to Java.
 

@@ -73,6 +73,79 @@ What do you want to do?
 - **4 — Sort contacts**: opens a sub-menu with options to sort by first name (A-Z or Z-A) or last name (A-Z or Z-A), or return to the main menu. After sorting, the full contact list is printed.
 - **5 — Exit**: saves all contacts back to `contacts.csv` and quits the app.
 
+## Class diagram
+
+```mermaid
+classDiagram
+    class ContactApp {
+        -Contacts contacts
+        +main() void
+        -runApp() void
+        -showMainMenu() int
+        -createContacts() void
+        -findContactMenu() void
+        -showContactMenu(Contact contact) void
+        -showSortMenu() void
+        +getYesNoChoiceFromUser(String message) String
+        +getMenuNumberFromUserInRange(String message, int minIncl, int maxIncl) int
+    }
+
+    class Contacts {
+        -ArrayList~Contact~ contacts
+        +addNewContact(Contact contact) void
+        +createNewContact() void
+        +printAllContacts() void
+        +findPersonByFirstName() Contact
+        +findPersonByLastName() Contact
+        +findPersonByEmail() Contact
+        +findPersonByFirstName(String name) Contact
+        +findPersonByLastName(String name) Contact
+        +findPersonByEmail(String email) Contact
+        +deleteContact(Contact contact) void
+        +editContact(Contact contact) void
+        +sortByFirstName(boolean reversed) void
+        +sortByLastName(boolean reversed) void
+        +sortByEmail(boolean reversed) void
+        -comparatorSortListByFirstName() void
+        +getContacts() ArrayList~Contact~
+        +setContacts(ArrayList~Contact~ contacts) void
+    }
+
+    class Contact {
+        -String firstName
+        -String lastName
+        -String phoneNumber
+        -String email
+        +Contact()
+        +getFirstName() String
+        +setFirstName(String firstName) void
+        +getLastName() String
+        +setLastName(String lastName) void
+        +getPhoneNumber() String
+        +setPhoneNumber(String phoneNumber) void
+        +getEmail() String
+        +setEmail(String email) void
+        +toString() String
+    }
+
+    class SaveLoadContacts {
+        <<static utility>>
+        -String FILE_PATH
+        +saveContacts(ArrayList~Contact~ contacts) void
+        +loadContacts() ArrayList~Contact~
+    }
+
+    ContactApp "1" *-- "1" Contacts : owns
+    Contacts "1" o-- "*" Contact : manages
+    ContactApp ..> SaveLoadContacts : uses
+    SaveLoadContacts ..> Contact : creates/reads
+```
+
+- `ContactApp` **owns** one `Contacts` instance (composition) and drives the console menu loop.
+- `Contacts` **manages** zero or more `Contact` objects in an `ArrayList<Contact>` (aggregation).
+- `ContactApp` **depends on** `SaveLoadContacts` to load contacts at startup and save them at exit.
+- `SaveLoadContacts` **depends on** `Contact` to build/read individual contacts when persisting to/from `contacts.csv`.
+
 ## Code walkthrough (for newer programmers)
 
 The project has four classes in `src/main/java/se/lexicon/`. Here's what each one does and why.
